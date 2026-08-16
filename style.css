@@ -282,16 +282,10 @@ h3 { font-size: var(--text-h3); }
 .btn--secondary:focus-visible { outline: 2px solid var(--accent-text); outline-offset: 2px; }
 
 /* Lien texte + flèche — CTA discret façon "text-link" de la référence */
-.text-link {
-  display: inline-flex; align-items: center; gap: var(--space-lg);
-  font-size: var(--text-label); text-transform: uppercase; letter-spacing: 0.1em;
-  color: var(--content-primary);
-  min-height: 44px;
-}
 .text-link__arrow { transition: transform var(--transition-normal); font-size: 1.2em; }
-.text-link:hover .text-link__arrow { transform: translateX(6px); }
 
 .btn-row { display: flex; flex-wrap: wrap; gap: var(--space-md); align-items: center; }
+.hero-badge { width: 3.75rem; height: auto; }
 
 /* ==========================================================
    Header / Nav — grille 3 colonnes, ligne fine, reprise exacte
@@ -342,7 +336,16 @@ h3 { font-size: var(--text-h3); }
 .header-actions .btn--secondary { min-width: 0; padding: var(--space-sm) var(--space-lg); }
 .menu-toggle { display: none; color: var(--raw-cream-100); padding: var(--space-sm); }
 
+.header-phone {
+  font-size: var(--text-micro); letter-spacing: 0.04em; white-space: nowrap;
+  color: var(--raw-cream-100); opacity: 0.85;
+  transition: opacity var(--transition-fast);
+}
+.header-phone:hover { opacity: 1; }
+.mobile-nav .header-phone { font-size: var(--text-body-lg); opacity: 1; }
+
 @media (max-width: 900px) {
+  .header-actions .header-phone { display: none; }
   .site-header { grid-template-columns: 1fr auto; padding-left: var(--space-lg); padding-right: var(--space-lg); }
   .main-nav { display: none; }
   .header-actions .btn--secondary { display: none; }

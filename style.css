@@ -487,7 +487,10 @@ h3 { font-size: var(--text-h3); }
 
 @media (max-width: 900px) {
   .hero-content { width: 100%; padding: 7rem var(--space-lg) 3.5rem; }
-  .hero-shade-panel { width: 100%; border-right: 0; background: linear-gradient(0deg, rgba(24, 21, 18, 0.72), rgba(24, 21, 18, 0.2) 55%); }
+  /* Le texte est aligné en haut sur mobile (.hero-content garde
+     justify-content: flex-start hérité du desktop) — le voile doit donc
+     assombrir le HAUT de la photo, pas le bas, pour que l'écriture ressorte. */
+  .hero-shade-panel { width: 100%; border-right: 0; background: linear-gradient(180deg, rgba(24, 21, 18, 0.78) 0%, rgba(24, 21, 18, 0.5) 45%, transparent 75%); }
   .hero h1 { font-size: clamp(1.75rem, 1.1rem + 4vw, 2.5rem); max-width: none; }
   .hero-photo-credit { left: var(--space-md); right: var(--space-md); max-width: none; text-align: left; bottom: var(--space-md); }
 }

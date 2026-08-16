@@ -490,8 +490,12 @@ h3 { font-size: var(--text-h3); }
   /* Le texte est aligné en haut sur mobile (.hero-content garde
      justify-content: flex-start hérité du desktop) — le voile doit donc
      assombrir le HAUT de la photo, pas le bas, pour que l'écriture ressorte. */
-  .hero-shade-panel { width: 100%; border-right: 0; background: linear-gradient(180deg, rgba(24, 21, 18, 0.78) 0%, rgba(24, 21, 18, 0.5) 45%, transparent 75%); }
+  .hero-shade-panel { width: 100%; border-right: 0; background: linear-gradient(180deg, rgba(18, 15, 12, 0.88) 0%, rgba(18, 15, 12, 0.78) 55%, rgba(18, 15, 12, 0.35) 85%); }
   .hero h1 { font-size: clamp(1.75rem, 1.1rem + 4vw, 2.5rem); max-width: none; }
+  /* Le sous-titre (taupe, plus clair que le blanc du H1) est le plus
+     sensible au contraste sur photo claire — assombri davantage + ombre
+     portée en filet de sécurité, indépendant du voile. */
+  .hero-subtitle { color: rgba(244, 236, 221, 0.92); text-shadow: 0 1px 8px rgba(0, 0, 0, 0.55); }
   .hero-photo-credit { left: var(--space-md); right: var(--space-md); max-width: none; text-align: left; bottom: var(--space-md); }
 }
 

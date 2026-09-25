@@ -311,6 +311,17 @@ h3 { font-size: var(--text-h3); }
 }
 
 .brand { display: flex; flex-direction: column; line-height: 1; justify-self: start; }
+/* Logo fourni en blanc sur fond transparent : réservé aux fonds sombres (header, footer). */
+.brand-logo { display: block; height: 3.5rem; width: auto; transition: height var(--duration-base, 0.3s) ease; }
+.site-header.is-scrolled .brand-logo { height: 3rem; }
+.brand-logo--footer { height: 4rem; }
+@media (max-width: 760px) {
+  .brand-logo { height: 3rem; }
+  .site-header.is-scrolled .brand-logo { height: 2.5rem; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .brand-logo { transition: none; }
+}
 .brand-name { font-family: var(--font-display); font-size: 1.5rem; letter-spacing: -0.02em; color: var(--raw-cream-100); }
 .brand-name .accent-dot { color: var(--raw-gold-300); }
 .brand-tag { font-family: var(--font-body); font-size: var(--text-micro); text-transform: uppercase; letter-spacing: 0.2em; color: var(--raw-gold-300); margin-top: 2px; }

@@ -1,2 +1,11 @@
 [build]
   publish = "."
+
+# LP réservée au trafic payant (SEA) : exclue de l'index des moteurs de recherche.
+# Complète la balise <meta name="robots"> de index.html et couvre aussi les
+# fichiers non-HTML (images, etc.). Ne pas bloquer via robots.txt : Google doit
+# pouvoir crawler la page pour lire le noindex et pour l'évaluer côté Ads.
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Robots-Tag = "noindex, nofollow"

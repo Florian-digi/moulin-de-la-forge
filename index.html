@@ -6,6 +6,10 @@
 
 <title>Moulin de la Forge</title>
 <meta name="description" content="Séminaire pour entreprise proche de Paris" />
+<!-- LP réservée au trafic payant (SEA) : exclue de l'index Google pour ne pas
+     concurrencer le site officiel en référencement naturel. Doublé par un
+     en-tête X-Robots-Tag dans netlify.toml. -->
+<meta name="robots" content="noindex, nofollow" />
 
 <link rel="icon" href="favicon.png" type="image/png" />
 <link rel="apple-touch-icon" href="favicon.png" />
@@ -26,9 +30,8 @@
 <a class="skip-link" href="#main">Aller au contenu</a>
 
 <header class="site-header" id="site-header" data-theme-section="dusk">
-  <a class="brand" href="#top" aria-label="Moulin de la Forge — accueil">
-    <span class="brand-name">Moulin de la <span class="accent-dot">Forge</span></span>
-    <span class="brand-tag">Séminaires résidentiels</span>
+  <a class="brand" href="#top" aria-label="Groupe Moulin de la Forge — accueil">
+    <img class="brand-logo" src="assets/reel/logo-groupe-moulin-de-la-forge.png" alt="Groupe Moulin de la Forge" width="225" height="189" />
   </a>
   <nav class="main-nav" aria-label="Navigation principale">
     <a href="#lieu">Le lieu</a>
@@ -95,23 +98,23 @@
           <span class="fact-chip__label">De Paris (Gare St Lazare)</span>
         </div>
         <div class="fact-chip">
-          <span class="fact-chip__value">64 / 112</span>
-          <span class="fact-chip__label">Chambres / lits</span>
+          <span class="fact-chip__value">35 ans</span>
+          <span class="fact-chip__label">D'expérience</span>
         </div>
         <div class="fact-chip">
-          <span class="fact-chip__value">20 %</span>
-          <span class="fact-chip__label">Du bus pris en charge</span>
+          <span class="fact-chip__value">3 lieux</span>
+          <span class="fact-chip__label">Pour correspondre à toutes les envies</span>
         </div>
         <div class="fact-chip">
-          <span class="fact-chip__value">RSE</span>
-          <span class="fact-chip__label">Certifié Engagé RSE (AFAQ 26000)</span>
+          <span class="fact-chip__value">3 à 250</span>
+          <span class="fact-chip__label">Participants</span>
         </div>
         <div class="fact-chip">
-          <span class="fact-chip__value placeholder-value">XX</span>
-          <span class="fact-chip__label">Entreprises passées par nos lieux pour leurs séminaires</span>
+          <span class="fact-chip__value">255</span>
+          <span class="fact-chip__label">Clients en 2025</span>
         </div>
       </div>
-      <p class="fact-bar-note reveal">De 25 à 140 participants : indiquez votre nombre exact dans le <a href="#contact">formulaire</a> pour recevoir une estimation adaptée à votre groupe.</p>
+      <p class="fact-bar-note reveal">Indiquez votre nombre exact dans le <a href="#contact">formulaire</a> pour recevoir une estimation adaptée à votre groupe.</p>
     </div>
   </section>
 
@@ -251,23 +254,23 @@
       </div>
       <div class="card-grid card-grid--3 reveal">
         <article class="persona-card" tabindex="0" role="button" data-persona="manager">
-          <p class="persona-card__meta">Mathieu · Responsable de service, PME</p>
+          <p class="persona-card__meta">Responsable de service, PME</p>
           <p class="persona-card__quote">« Un lieu qui renforce la cohésion, facilite le travail d'équipe et donne du sens aux temps collectifs. »</p>
         </article>
         <article class="persona-card" tabindex="0" role="button" data-persona="communication">
-          <p class="persona-card__meta">Sarah · Directrice de la communication</p>
+          <p class="persona-card__meta">Directrice de la communication</p>
           <p class="persona-card__quote">« Un lieu de séminaire inspirant, esthétique et responsable, qui valorise l'image de votre entreprise. »</p>
         </article>
         <article class="persona-card" tabindex="0" role="button" data-persona="formation-rh">
-          <p class="persona-card__meta">Franck · Directeur de la formation</p>
+          <p class="persona-card__meta">Directeur de la formation</p>
           <p class="persona-card__quote">« Un cadre structuré, serein et qualitatif pour réunir, écouter et faire avancer vos équipes. »</p>
         </article>
         <article class="persona-card" tabindex="0" role="button" data-persona="assistante">
-          <p class="persona-card__meta">Camille · Assistante de direction</p>
+          <p class="persona-card__meta">Assistante de direction</p>
           <p class="persona-card__quote">« Un lieu chaleureux, fluide à organiser et profondément engagé, pour des événements qui ont du sens. »</p>
         </article>
         <article class="persona-card" tabindex="0" role="button" data-persona="assistante">
-          <p class="persona-card__meta">Françoise · Assistante de direction du Codir</p>
+          <p class="persona-card__meta">Assistante de direction du Codir</p>
           <p class="persona-card__quote">« Un partenaire fiable, professionnel et attentionné, qui simplifie l'organisation et garantit un événement réussi. »</p>
         </article>
         <article class="persona-card" tabindex="0" role="button" data-persona="achats-rse">
@@ -290,7 +293,7 @@
           <h2 id="salles-title">Trois lieux,<br />une même exigence.</h2>
         </div>
         <div class="editorial-intro__copy">
-          <p>Le Moulin de la Forge fait partie d'un groupe de trois maisons de séminaire dans l'Oise. Selon le format recherché, votre équipe ira naturellement vers l'une des trois — voici comment elles se distinguent.</p>
+          <p>Le Moulin de la Forge fait partie d'un groupe de trois maisons de séminaire dans l'Oise. Selon le format recherché, votre équipe ira naturellement vers l'une des trois. Voici comment elles se distinguent.</p>
         </div>
       </div>
 
@@ -303,8 +306,8 @@
             <p class="venue-card__desc">Nature, étang, verger — l'ambiance la plus authentique et vivante des trois maisons.</p>
             <ul class="venue-card__stats">
               <li><strong>64</strong> chambres</li>
-              <li><strong>2</strong> salles</li>
-              <li>Jusqu'à <strong>140</strong> pers.</li>
+              <li><strong>3</strong> salles</li>
+              <li>Jusqu'à <strong>160</strong> pers.</li>
             </ul>
           </div>
         </article>
@@ -314,11 +317,10 @@
             <h3>Domaine de Rebetz</h3>
             <p class="venue-card__desc">Domaine plus élégant, grandes capacités, amphithéâtre et golf — pour les conventions et plénières XXL.</p>
             <ul class="venue-card__stats">
-              <li><strong>80</strong> chambres</li>
+              <li><strong>120</strong> chambres</li>
               <li><strong>6</strong> salles</li>
-              <li>Jusqu'à <strong>200</strong> pers.</li>
+              <li>Jusqu'à <strong>250</strong> pers.</li>
             </ul>
-            <p class="venue-card__note placeholder-value">Données publiques, à confirmer avec le groupe</p>
           </div>
         </article>
         <article class="venue-card">
@@ -329,18 +331,13 @@
             <ul class="venue-card__stats">
               <li><strong>47</strong> chambres</li>
               <li><strong>3</strong> salles</li>
-              <li>Jusqu'à <strong>200</strong> pers.</li>
+              <li>Jusqu'à <strong>100</strong> pers.</li>
             </ul>
-            <p class="venue-card__note placeholder-value">Données publiques, à confirmer avec le groupe</p>
           </div>
         </article>
       </div>
 
       <div class="reframe reveal" style="margin-top: var(--space-3xl);">
-        <div class="reframe__meta" aria-hidden="true">
-          <span>Direction 01</span><span class="reframe__meta-sep"></span><span>Grille de preuves</span>
-        </div>
-
         <div class="reframe__header">
           <div>
             <p class="eyebrow">Ce qui nous différencie</p>
@@ -398,10 +395,6 @@
   <!-- 7. CHAMBRES ET RESTAURATION — refondu en "trois chapitres" (2026-08-16) sur référence visuelle du client -->
   <section class="chapitres" data-theme-section="grove" aria-labelledby="chambres-title">
     <div class="container">
-      <div class="chapitres__meta reveal" aria-hidden="true">
-        <span>Direction 02</span><span class="chapitres__meta-sep"></span><span>Trois chapitres</span>
-      </div>
-
       <div class="chapitres__header reveal">
         <div>
           <p class="eyebrow">Hébergement &amp; table</p>
@@ -589,10 +582,6 @@
 
     <div class="rse-engagement__row">
       <div class="rse-engagement__side reveal">
-        <div class="rse-engagement__meta" aria-hidden="true">
-          <span>Direction 03</span><span class="rse-engagement__meta-sep"></span><span>Ressources &amp; preuves</span>
-        </div>
-
         <div class="rse-engagement__intro">
           <p class="eyebrow">Engagements</p>
           <h2 id="rse-title">Un séminaire<br />engagé RSE</h2>
@@ -823,8 +812,18 @@
               <input type="date" id="arrivalDate" name="arrivalDate" />
             </div>
             <div class="field">
+              <label for="arrivalTime">Heure d'arrivée</label>
+              <input type="time" id="arrivalTime" name="arrivalTime" step="900" />
+            </div>
+          </div>
+          <div class="field-row">
+            <div class="field">
               <label for="departureDate">Date de départ</label>
               <input type="date" id="departureDate" name="departureDate" />
+            </div>
+            <div class="field">
+              <label for="departureTime">Heure de départ</label>
+              <input type="time" id="departureTime" name="departureTime" step="900" />
             </div>
           </div>
           <button type="button" class="btn btn--primary" id="go-step-2">Continuer →</button>
@@ -894,7 +893,9 @@
 <footer class="site-footer">
   <div class="container">
     <div class="footer-brand">
-      <a class="brand-name" href="#top">Moulin de la <span class="accent-dot">Forge</span></a>
+      <a href="#top" aria-label="Groupe Moulin de la Forge — retour en haut">
+        <img class="brand-logo brand-logo--footer" src="assets/reel/logo-groupe-moulin-de-la-forge.png" alt="Groupe Moulin de la Forge" width="225" height="189" loading="lazy" />
+      </a>
       <span>Séminaires résidentiels · Oise</span>
     </div>
     <nav class="footer-nav" aria-label="Navigation footer">

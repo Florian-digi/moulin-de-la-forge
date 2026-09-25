@@ -881,6 +881,7 @@ h3 { font-size: var(--text-h3); }
 
 .chapitres__header { display: flex; justify-content: space-between; align-items: flex-end; gap: var(--space-lg); margin-bottom: var(--space-2xl); }
 .chapitres__header h2 { color: var(--content-primary); }
+.chapitres__lead { margin-top: var(--space-md); max-width: 40rem; color: var(--content-secondary); }
 .chapitres__tagline { font-size: var(--text-micro); font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent-text); white-space: nowrap; }
 
 .chapitres__grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-md); }
@@ -1176,6 +1177,24 @@ h3 { font-size: var(--text-h3); }
   border-radius: 0; padding: var(--space-sm) 0; min-height: 44px;
 }
 .field select { color: var(--raw-cream-100); }
+
+/* Dates et heures : calendrier natif (desktop + mobile) passé en thème sombre
+   pour que l'icône et la popup restent lisibles sur le panneau de contact.
+   Les heures sont des <select> (roue native sur iOS/Android, liste sur desktop). */
+.field input[type="date"], .field select { color-scheme: dark; width: 100%; cursor: pointer; }
+.field input[type="date"] {
+  -webkit-appearance: none; appearance: none;
+  display: block; text-align: left;
+}
+.field input[type="date"]::-webkit-date-and-time-value { text-align: left; }
+.field input[type="date"]::-webkit-calendar-picker-indicator { opacity: 0.8; cursor: pointer; }
+.field select.time-select {
+  -webkit-appearance: none; appearance: none;
+  padding-right: var(--space-lg);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%23f4ecdd' stroke-width='1.4'/%3E%3C/svg%3E");
+  background-repeat: no-repeat; background-position: right 4px center;
+}
+.field__hint { font-size: var(--text-caption); color: rgba(244, 236, 221, 0.6); }
 .field select option { color: var(--raw-brown-900); }
 .field textarea { min-height: 72px; resize: vertical; border: 1px solid rgba(255, 255, 255, 0.32); padding: var(--space-sm); }
 .field input::placeholder, .field textarea::placeholder { color: rgba(244, 236, 221, 0.4); }

@@ -140,6 +140,66 @@
     });
   });
 
+  /* ---------- Dates & heures du séjour ---------- */
+  // Calendrier natif (s'adapte seul à desktop / iOS / Android). Règles :
+  // arrivée à partir d'aujourd'hui, départ au moins le lendemain de l'arrivée.
+  const arrivalDate = document.getElementById("arrivalDate");
+  const departureDate = document.getElementById("departureDate");
+
+  function pad2(n) { return String(n).padStart(2, "0"); }
+  function toISODate(d) { return d.getFullYear() + "-" + pad2(d.getMonth() + 1) + "-" + pad2(d.getDate()); }
+  function addDays(iso, days) {
+    const parts = iso.split("-").map(Number);
+    return toISODate(new Date(parts[0], parts[1] - 1, parts[2] + days));
+  }
+
+  function syncDepartureMin() {
+    if (!arrivalDate || !departureDate) return;
+    const today = toISODate(new Date());
+    arrivalDate.min = today;
+    departureDate.min = addDays(arrivalDate.value || today, 1);
+    // Arrivée déplacée après (ou le jour du) départ : on vide le départ plutôt
+    // que de laisser une combinaison impossible.
+    if (departureDate.value && departureDate.value < departureDate.min) {
+      departureDate.value = "";
+    }
+    departureDate.setCustomValidity("");
+  }
+
+  function validateDeparture() {
+    if (!arrivalDate || !departureDate) return;
+    const invalid = arrivalDate.value && departureDate.value && departureDate.value <= arrivalDate.value;
+    departureDate.setCustomValidity(invalid ? "La date de départ doit être au moins le lendemain de la date d'arrivée." : "");
+  }
+
+  if (arrivalDate && departureDate) {
+    syncDepartureMin();
+    arrivalDate.addEventListener("change", syncDepartureMin);
+    departureDate.addEventListener("change", validateDeparture);
+    // Chrome/Edge desktop n'ouvrent le calendrier qu'au clic sur l'icône :
+    // on l'ouvre au clic n'importe où dans le champ.
+    [arrivalDate, departureDate].forEach(function (input) {
+      input.addEventListener("click", function () {
+        if (typeof input.showPicker === "function") {
+          try { input.showPicker(); } catch (err) { /* navigateur qui refuse : picker natif par défaut */ }
+        }
+      });
+    });
+  }
+
+  // Heures : créneaux de 30 min de 7h à 22h, en <select> pour avoir la roue
+  // native sur mobile et une liste simple sur desktop.
+  document.querySelectorAll("[data-time-select]").forEach(function (select) {
+    for (let minutes = 7 * 60; minutes <= 22 * 60; minutes += 30) {
+      const h = Math.floor(minutes / 60);
+      const m = pad2(minutes % 60);
+      const option = document.createElement("option");
+      option.value = pad2(h) + ":" + m;
+      option.textContent = h + "h" + m;
+      select.appendChild(option);
+    }
+  });
+
   /* ---------- Formulaire en deux étapes ---------- */
   const step1 = document.getElementById("form-step-1");
   const step2 = document.getElementById("form-step-2");
@@ -168,9 +228,11 @@
       // Ne valider/signaler que les champs de l'étape 1 : form.reportValidity()
       // toucherait aussi la case RGPD (requise) de l'étape 2, encore masquée
       // (display:none) et donc non focusable — ce qui lève une erreur console.
-      const requiredStep1 = step1.querySelectorAll("[required]");
+      // Inclut les champs non requis (dates) pour bloquer un départ avant l'arrivée.
+      validateDeparture();
+      const fieldsStep1 = step1.querySelectorAll("input, select");
       let firstInvalid = null;
-      requiredStep1.forEach(function (field) {
+      fieldsStep1.forEach(function (field) {
         if (!field.checkValidity() && !firstInvalid) firstInvalid = field;
       });
       if (firstInvalid) {

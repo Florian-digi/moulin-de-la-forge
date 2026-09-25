@@ -800,7 +800,8 @@ h3 { font-size: var(--text-h3); }
    à l'identique de la section "Projets" de la référence.
    ========================================================== */
 
-.showcase-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2px; }
+/* 6 activités : 3 colonnes x 2 rangées sur desktop (4 colonnes laisserait une rangée bancale). */
+.showcase-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; }
 
 .showcase-card {
   position: relative; min-height: 26.875rem;

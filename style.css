@@ -294,7 +294,9 @@ h3 { font-size: var(--text-h3); }
 .site-header {
   position: fixed; top: 0; left: 0; right: 0; z-index: 50;
   display: grid;
-  grid-template-columns: 1fr auto 1fr;
+  /* auto / 1fr / auto : la nav prend l'espace restant, centrée, sans que le
+     bloc téléphone + CTA (plus large que le logo) ne la chevauche. */
+  grid-template-columns: auto 1fr auto;
   align-items: center;
   gap: var(--space-lg);
   padding: var(--space-lg) var(--edge-pad);
@@ -326,13 +328,15 @@ h3 { font-size: var(--text-h3); }
 .brand-name .accent-dot { color: var(--raw-gold-300); }
 .brand-tag { font-family: var(--font-body); font-size: var(--text-micro); text-transform: uppercase; letter-spacing: 0.2em; color: var(--raw-gold-300); margin-top: 2px; }
 
-.main-nav { display: flex; gap: clamp(1.5rem, 4vw, 3rem); align-items: center; }
+.main-nav { display: flex; gap: clamp(1.5rem, 2.5vw, 2.5rem); align-items: center; justify-self: center; }
 .main-nav a {
   position: relative;
-  font-size: var(--text-micro);
+  white-space: nowrap;
+  font-size: 0.875rem;
+  font-weight: 500;
   text-transform: uppercase;
-  letter-spacing: 0.12em;
-  color: rgba(244, 236, 221, 0.82);
+  letter-spacing: 0.1em;
+  color: rgba(244, 236, 221, 0.95);
 }
 .main-nav a::after {
   content: ""; position: absolute; left: 0; bottom: -0.5rem; width: 100%; height: 1px;
@@ -344,16 +348,25 @@ h3 { font-size: var(--text-h3); }
 .main-nav a:hover::after, .main-nav a:focus-visible::after { transform: scaleX(1); transform-origin: left; }
 
 .header-actions { display: flex; align-items: center; gap: var(--space-md); justify-self: end; }
-.header-actions .btn--secondary { min-width: 0; padding: var(--space-sm) var(--space-lg); }
+.header-actions .btn--secondary { min-width: 0; padding: 0.75rem var(--space-lg); font-size: 0.9375rem; font-weight: 600; }
 .menu-toggle { display: none; color: var(--raw-cream-100); padding: var(--space-sm); }
 
 .header-phone {
-  font-size: var(--text-micro); letter-spacing: 0.04em; white-space: nowrap;
-  color: var(--raw-cream-100); opacity: 0.85;
+  font-size: 1rem; font-weight: 500; letter-spacing: 0.02em; white-space: nowrap;
+  color: var(--raw-cream-100); opacity: 1;
   transition: opacity var(--transition-fast);
 }
 .header-phone:hover { opacity: 1; }
 .mobile-nav .header-phone { font-size: var(--text-body-lg); opacity: 1; }
+
+/* Textes du menu agrandis : sous 1240px, logo + 5 liens + téléphone + CTA ne
+   tiennent plus sur une ligne → les liens passent dans le menu burger, le
+   téléphone et le CTA restent visibles. */
+@media (max-width: 1240px) {
+  .site-header { grid-template-columns: 1fr auto; }
+  .main-nav { display: none; }
+  .menu-toggle { display: flex; }
+}
 
 @media (max-width: 900px) {
   .header-actions .header-phone { display: none; }
@@ -410,7 +423,7 @@ h3 { font-size: var(--text-h3); }
     /* Voile haut, sur toute la largeur : garde la nav lisible même sur une
        photo claire (ciel/pelouse) où le header transparent perdrait sinon
        tout contraste — indépendant du panneau gauche. */
-    linear-gradient(180deg, rgba(24, 21, 18, 0.55) 0%, transparent 140px),
+    linear-gradient(180deg, rgba(18, 15, 12, 0.75) 0%, transparent 160px),
     linear-gradient(90deg, rgba(7, 47, 36, 0.08), rgba(36, 21, 14, 0.02) 70%),
     linear-gradient(0deg, rgba(36, 21, 14, 0.28), transparent 48%);
 }
@@ -420,7 +433,7 @@ h3 { font-size: var(--text-h3); }
   position: absolute; inset: 0 auto 0 0; z-index: -1;
   width: 50%;
   border-right: 1px solid rgba(255, 255, 255, 0.1);
-  background: linear-gradient(110deg, rgba(24, 21, 18, 0.64), rgba(24, 21, 18, 0.46));
+  background: linear-gradient(110deg, rgba(18, 15, 12, 0.84), rgba(18, 15, 12, 0.7));
   pointer-events: none;
 }
 .hero::before {
@@ -446,6 +459,11 @@ h3 { font-size: var(--text-h3); }
 /* Eyebrow un peu plus lisible que le micro-label générique des autres
    sections, sans toucher au reste du site (.eyebrow global). */
 .hero-content .eyebrow { font-size: 0.8125rem; margin-bottom: var(--space-md); }
+/* Filet de sécurité contraste : ombre douce sous tout le texte du hero,
+   en plus du voile, pour les zones claires de la photo. */
+.hero-content { text-shadow: 0 1px 10px rgba(0, 0, 0, 0.6); }
+.hero-content .btn, .hero-content .hero-badge { text-shadow: none; }
+.hero-content .btn--primary { font-size: 0.9375rem; font-weight: 600; }
 
 /* H1 phrase (preuve sociale nommée) plutôt qu'un chiffre isolé façon
    "24 heures." — taille et fer resserrés pour tenir au-dessus de la
@@ -461,9 +479,9 @@ h3 { font-size: var(--text-h3); }
   margin-bottom: var(--space-md);
 }
 
-.hero-subtitle { font-size: 1.0625rem; font-weight: 300; color: var(--raw-taupe-300); max-width: 30rem; margin-bottom: var(--space-md); }
+.hero-subtitle { font-size: 1.0625rem; font-weight: 400; color: rgba(244, 236, 221, 0.95); max-width: 30rem; margin-bottom: var(--space-md); }
 .hero-subtitle strong { color: var(--raw-cream-100); font-weight: 500; }
-.hero-fineprint { margin-top: var(--space-sm); font-size: var(--text-caption); color: rgba(244, 236, 221, 0.55); }
+.hero-fineprint { margin-top: var(--space-sm); font-size: var(--text-caption); color: rgba(244, 236, 221, 0.85); }
 
 /* Badge d'avis Google — vraie donnée du client (4,7/5, 162 avis), pas une
    estimation. À remettre à jour si la note évolue. */
@@ -478,9 +496,9 @@ h3 { font-size: var(--text-h3); }
   overflow: hidden;
   color: var(--raw-gold-300);
 }
-.hero-rating__text { font-size: var(--text-caption); color: rgba(244, 236, 221, 0.7); }
+.hero-rating__text { font-size: var(--text-caption); color: rgba(244, 236, 221, 0.92); }
 .hero-rating__text strong { color: var(--raw-cream-100); font-weight: 600; }
-.hero-rating__google { color: rgba(244, 236, 221, 0.55); }
+.hero-rating__google { color: rgba(244, 236, 221, 0.85); }
 
 .hero-photo-credit {
   position: absolute; z-index: 1; left: var(--space-lg); bottom: var(--space-lg);
@@ -501,7 +519,7 @@ h3 { font-size: var(--text-h3); }
   /* Le texte est aligné en haut sur mobile (.hero-content garde
      justify-content: flex-start hérité du desktop) — le voile doit donc
      assombrir le HAUT de la photo, pas le bas, pour que l'écriture ressorte. */
-  .hero-shade-panel { width: 100%; border-right: 0; background: linear-gradient(180deg, rgba(18, 15, 12, 0.88) 0%, rgba(18, 15, 12, 0.78) 55%, rgba(18, 15, 12, 0.35) 85%); }
+  .hero-shade-panel { width: 100%; border-right: 0; background: linear-gradient(180deg, rgba(18, 15, 12, 0.9) 0%, rgba(18, 15, 12, 0.84) 60%, rgba(18, 15, 12, 0.6) 100%); }
   .hero h1 { font-size: clamp(1.75rem, 1.1rem + 4vw, 2.5rem); max-width: none; }
   /* Le sous-titre (taupe, plus clair que le blanc du H1) est le plus
      sensible au contraste sur photo claire — assombri davantage + ombre

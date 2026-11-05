@@ -210,6 +210,27 @@ section[data-theme-section] {
   padding: var(--section-space) 0;
 }
 
+/* Bandeau logos clients sous le hero — fin, statique, sans animation */
+section[data-theme-section].client-logos { padding: var(--space-xl) 0; }
+.client-logos .container { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: var(--space-md) var(--space-xl); }
+.client-logos__title {
+  font-family: var(--font-body);
+  font-size: var(--text-caption);
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--content-primary);
+  opacity: 0.7;
+  margin: 0;
+}
+.client-logos__list { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: var(--space-lg) var(--space-xl); list-style: none; margin: 0; padding: 0; }
+.client-logos__list img { display: block; height: 2.5rem; width: auto; opacity: 0.65; }
+.client-logos__list img.client-logos__wide { height: 2rem; }
+@media (max-width: 600px) {
+  .client-logos__list img { height: 2rem; }
+  .client-logos__list img.client-logos__wide { height: 1.5rem; }
+}
+
 .eyebrow, .section-number {
   font-family: var(--font-body);
   font-size: var(--text-micro);

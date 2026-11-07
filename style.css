@@ -656,9 +656,11 @@ h3 { font-size: var(--text-h3); }
 .rse-cert__logo { width: 4.5rem; height: auto; flex-shrink: 0; }
 .rse-cert p { font-size: var(--text-caption); color: var(--content-secondary); }
 .rse-cert strong { color: var(--content-primary); }
-.rse-cert--ecovadis { margin-top: var(--space-md); flex-wrap: wrap; }
-.rse-cert--ecovadis iframe { display: block; width: 300px; max-width: 100%; height: 300px; border: 0; flex-shrink: 0; }
-.rse-cert--ecovadis p { flex: 1 1 12rem; }
+.rse-cert--ecovadis { margin-top: var(--space-md); }
+/* Le code EcoVadis impose une iframe 300×300 : on la garde intacte et on la
+   réduit visuellement (scale) dans un cadre de la taille du logo AFAQ. */
+.rse-cert__ecovadis-frame { width: 6rem; height: 6rem; flex-shrink: 0; overflow: hidden; }
+.rse-cert__ecovadis-frame iframe { display: block; width: 300px; height: 300px; border: 0; transform: scale(0.32); transform-origin: 0 0; }
 
 /* ==========================================================
    Déroulé — image à gauche (ambiance + jalon 01→06), liste de

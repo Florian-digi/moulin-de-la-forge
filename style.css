@@ -656,6 +656,9 @@ h3 { font-size: var(--text-h3); }
 .rse-cert__logo { width: 4.5rem; height: auto; flex-shrink: 0; }
 .rse-cert p { font-size: var(--text-caption); color: var(--content-secondary); }
 .rse-cert strong { color: var(--content-primary); }
+.rse-cert--ecovadis { margin-top: var(--space-md); flex-wrap: wrap; }
+.rse-cert--ecovadis iframe { display: block; width: 300px; max-width: 100%; height: 300px; border: 0; flex-shrink: 0; }
+.rse-cert--ecovadis p { flex: 1 1 12rem; }
 
 /* ==========================================================
    Déroulé — image à gauche (ambiance + jalon 01→06), liste de
@@ -1203,6 +1206,8 @@ h3 { font-size: var(--text-h3); }
 .contact-panel h2 { color: var(--raw-cream-100); }
 .contact-panel .eyebrow { color: var(--raw-gold-300); }
 .contact-intro { max-width: 24rem; margin: var(--space-lg) 0 var(--space-xl); color: rgba(244, 236, 221, 0.72); font-size: var(--text-body); font-weight: 300; }
+.contact-intro:has(+ .contact-highlight) { margin-bottom: var(--space-md); }
+.contact-highlight { margin: 0 0 var(--space-xl); padding-left: var(--space-md); border-left: 2px solid var(--raw-gold-300); color: var(--raw-cream-100); font-size: var(--text-body); font-weight: 500; }
 
 .form-steps { display: flex; gap: var(--space-sm); margin-bottom: var(--space-xl); font-size: var(--text-micro); letter-spacing: 0.08em; text-transform: uppercase; color: rgba(244, 236, 221, 0.55); }
 .form-steps span[data-active="true"] { color: var(--raw-gold-300); font-weight: 600; }

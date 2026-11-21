@@ -258,19 +258,43 @@
     });
   }
 
-  // NOTE IMPORTANTE — pas de backend branché pour l'instant.
-  // Aucun projet Supabase n'existe encore pour Moulin de la Forge : il ne faut
-  // surtout pas réutiliser l'URL/clé Supabase d'un autre client (fuite de données
-  // entre clients). Cette soumission reste donc une maquette : validation complète
-  // + état de succès local, sans appel réseau. Avant mise en ligne réelle,
-  // brancher soit un projet Supabase dédié (table `leads`, cf. pattern
-  // clients/ellipsis-succession/main.js), soit le webhook fourni par le client.
+  // Leads : 2 appels indépendants (pattern LP clients, cf. clients/RMB avocat/main.js)
+  //  1. archivage dans Supabase « Landing pages Clients », table `leads` (anon = INSERT seul)
+  //  2. webhook n8n → mail d'alerte (scénario : n8n/workflow-leads-mail.json)
+  // Le webhook part en fire-and-forget : si Supabase tombe, le mail part quand même.
+  const SOURCE = "moulin-de-la-forge";
+  const SUPABASE_URL = "https://pnaizymghnhvhzwzitja.supabase.co";
+  const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBuYWl6eW1naG5odmh6d3ppdGphIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkzNDY4ODAsImV4cCI6MjA5NDkyMjg4MH0.5ZB4NPx7t4glHTdlimC9QCVGDMkEwPvPP4o8fotyG_4";
+  const N8N_WEBHOOK = "https://n8n.srv1293539.hstgr.cloud/webhook/moulin-de-la-forge";
+  const TRACKING_PARAMS = ["gclid", "gbraid", "wbraid", "fbclid", "utm_source", "utm_medium", "utm_campaign", "utm_term", "utm_content"];
+
+  function generateLeadId() {
+    const bytes = new Uint8Array(4);
+    window.crypto.getRandomValues(bytes);
+    return "LEAD-" + Array.from(bytes, function (b) { return b.toString(16).padStart(2, "0"); }).join("").toUpperCase();
+  }
+
+  // Libellé lisible d'un <select> (pour le mail), vide si rien de choisi
+  function selectLabel(id) {
+    const select = document.getElementById(id);
+    if (!select || !select.value) return "";
+    return select.options[select.selectedIndex].textContent.trim();
+  }
+
+  // Date ISO (aaaa-mm-jj) → jj/mm/aaaa
+  function frDate(iso) {
+    if (!iso) return "";
+    const p = iso.split("-");
+    return p[2] + "/" + p[1] + "/" + p[0];
+  }
+
   if (form) {
-    form.addEventListener("submit", function (e) {
+    form.addEventListener("submit", async function (e) {
       e.preventDefault();
       statusEl.textContent = "";
       statusEl.removeAttribute("data-state");
 
+      // Honeypot rempli = bot : on ignore sans rien signaler
       const honeypot = form.querySelector('[name="website"]');
       if (honeypot && honeypot.value) {
         return;
@@ -282,7 +306,108 @@
       }
 
       const data = Object.fromEntries(new FormData(form).entries());
-      pushEvent("form_submit", { participants: data.participants, reason: data.reason || "" });
+      const leadId = generateLeadId();
+      const urlParams = new URLSearchParams(window.location.search);
+      const tracking = {};
+      TRACKING_PARAMS.forEach(function (key) {
+        const value = urlParams.get(key);
+        if (value) tracking[key] = value.slice(0, 500);
+      });
+
+      const lead = {
+        source: SOURCE,
+        lead_id: leadId,
+        prenom: data.firstName,
+        nom: data.lastName,
+        email: data.email,
+        telephone: data.phone || "",
+        societe: data.company || "",
+        fonction: selectLabel("reason"),
+        participants: data.participants,
+        format: selectLabel("format"),
+        date_arrivee: frDate(data.arrivalDate),
+        heure_arrivee: selectLabel("arrivalTime"),
+        date_depart: frDate(data.departureDate),
+        heure_depart: selectLabel("departureTime"),
+        chambres: selectLabel("rooms"),
+        budget: selectLabel("budget"),
+        message: data.message || "",
+        page: window.location.href,
+        date_heure: new Date().toLocaleString("fr-FR", { day: "2-digit", month: "2-digit", year: "numeric", hour: "2-digit", minute: "2-digit" }),
+        date_iso: new Date().toISOString(),
+      };
+
+      const submitButton = form.querySelector('button[type="submit"]');
+      const submitLabel = submitButton.innerHTML;
+      submitButton.disabled = true;
+      submitButton.textContent = "Envoi en cours…";
+
+      // 1. Alerte mail n8n — fire-and-forget, ne bloque pas l'enregistrement
+      const webhookCall = fetch(N8N_WEBHOOK, {
+        method: "POST",
+        keepalive: true,
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(Object.assign({}, lead, tracking)),
+      }).catch(function (err) {
+        console.error("n8n webhook error:", err);
+        return null;
+      });
+
+      // 2. Archivage Supabase
+      let saved = false;
+      try {
+        const response = await fetch(SUPABASE_URL + "/rest/v1/leads", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            apikey: SUPABASE_ANON_KEY,
+            Authorization: "Bearer " + SUPABASE_ANON_KEY,
+          },
+          body: JSON.stringify({
+            source: SOURCE,
+            nom: [lead.prenom, lead.nom].filter(Boolean).join(" "),
+            email: lead.email,
+            telephone: lead.telephone,
+            message: lead.message,
+            metadata: Object.assign({
+              lead_id: leadId,
+              consent: data.consent === "on", // preuve RGPD : case cochée au moment de l'envoi
+              prenom: lead.prenom,
+              societe: lead.societe,
+              fonction: lead.fonction,
+              participants: lead.participants,
+              format: lead.format,
+              date_arrivee: data.arrivalDate || "",
+              heure_arrivee: lead.heure_arrivee,
+              date_depart: data.departureDate || "",
+              heure_depart: lead.heure_depart,
+              chambres: lead.chambres,
+              budget: lead.budget,
+              page: lead.page,
+            }, tracking),
+          }),
+        });
+        saved = response.ok;
+        if (!response.ok) console.error("Supabase insert failed:", response.status);
+      } catch (err) {
+        console.error("Supabase error:", err);
+      }
+
+      // Le lead est perdu seulement si les DEUX appels ont échoué
+      if (!saved) {
+        const webhookResponse = await webhookCall;
+        saved = !!(webhookResponse && webhookResponse.ok);
+      }
+
+      if (!saved) {
+        submitButton.disabled = false;
+        submitButton.innerHTML = submitLabel;
+        statusEl.setAttribute("data-state", "error");
+        statusEl.textContent = "L'envoi n'a pas abouti. Merci de réessayer dans un instant, ou de nous appeler au +33 (0)3 44 49 61 31.";
+        return;
+      }
+
+      pushEvent("form_submit", { lead_id: leadId, participants: data.participants, reason: data.reason || "" });
 
       form.hidden = true;
       statusEl.setAttribute("data-state", "success");

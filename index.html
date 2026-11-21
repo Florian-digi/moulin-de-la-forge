@@ -941,13 +941,14 @@
           </div>
           <div class="field-row">
             <div class="field">
-              <label for="arrivalDate">Date d'arrivée</label>
-              <input type="date" id="arrivalDate" name="arrivalDate" />
+              <label for="arrivalDate">Date d'arrivée *</label>
+              <input type="date" id="arrivalDate" name="arrivalDate" required />
             </div>
             <div class="field">
-              <label for="arrivalTime">Heure d'arrivée</label>
-              <select class="time-select" id="arrivalTime" name="arrivalTime" data-time-select>
+              <label for="arrivalTime">Heure d'arrivée *</label>
+              <select class="time-select" id="arrivalTime" name="arrivalTime" data-time-select required>
                 <option value="">Sélectionner…</option>
+                <option value="indecis">Je ne sais pas encore</option>
               </select>
             </div>
           </div>
@@ -961,6 +962,7 @@
               <label for="departureTime">Heure de départ</label>
               <select class="time-select" id="departureTime" name="departureTime" data-time-select>
                 <option value="">Sélectionner…</option>
+                <option value="indecis">Je ne sais pas encore</option>
               </select>
             </div>
           </div>

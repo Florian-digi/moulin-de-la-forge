@@ -1,0 +1,53 @@
+{
+  "name": "LP Moulin de la Forge — leads → mail",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "moulin-de-la-forge",
+        "options": {
+          "allowedOrigins": "*"
+        }
+      },
+      "id": "5b1f3c2e-1d4a-4f6b-9a7e-1c2d3e4f5a01",
+      "name": "Webhook LP",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [0, 0],
+      "webhookId": "8c6a2f1e-4b7d-4e2a-9f3c-6d5e4a3b2c10"
+    },
+    {
+      "parameters": {
+        "sendTo": "florianmaroto@gmail.com",
+        "subject": "=Nouvelle demande séminaire — {{ $json.body.societe || ($json.body.prenom + ' ' + $json.body.nom) }} ({{ $json.body.participants }} pers.)",
+        "emailType": "html",
+        "message": "=<div style=\"font-family:Arial,sans-serif;font-size:14px;color:#231b16;max-width:620px\">\n<h2 style=\"color:#3e2415;margin:0 0 8px\">Nouvelle demande de séminaire</h2>\n<p style=\"margin:0 0 16px;color:#5a4e3f\">Reçue le {{ $json.body.date_heure }} via la landing page · {{ $json.body.lead_id }}</p>\n<h3 style=\"color:#3e2415;margin:16px 0 8px\">Contact</h3>\n<table cellpadding=\"4\" style=\"border-collapse:collapse\">\n<tr><td><b>Nom</b></td><td>{{ $json.body.prenom }} {{ $json.body.nom }}</td></tr>\n<tr><td><b>Société</b></td><td>{{ $json.body.societe || '—' }}</td></tr>\n<tr><td><b>Fonction</b></td><td>{{ $json.body.fonction || '—' }}</td></tr>\n<tr><td><b>Email</b></td><td><a href=\"mailto:{{ $json.body.email }}\">{{ $json.body.email }}</a></td></tr>\n<tr><td><b>Téléphone</b></td><td>{{ $json.body.telephone || '—' }}</td></tr>\n</table>\n<h3 style=\"color:#3e2415;margin:16px 0 8px\">Séjour</h3>\n<table cellpadding=\"4\" style=\"border-collapse:collapse\">\n<tr><td><b>Participants</b></td><td>{{ $json.body.participants }}</td></tr>\n<tr><td><b>Format</b></td><td>{{ $json.body.format || '—' }}</td></tr>\n<tr><td><b>Arrivée</b></td><td>{{ $json.body.date_arrivee }} · {{ $json.body.heure_arrivee }}</td></tr>\n<tr><td><b>Départ</b></td><td>{{ $json.body.date_depart || '—' }} · {{ $json.body.heure_depart || '—' }}</td></tr>\n<tr><td><b>Chambres</b></td><td>{{ $json.body.chambres || '—' }}</td></tr>\n<tr><td><b>Budget</b></td><td>{{ $json.body.budget || '—' }}</td></tr>\n</table>\n<h3 style=\"color:#3e2415;margin:16px 0 8px\">Message</h3>\n<p style=\"white-space:pre-line;margin:0\">{{ $json.body.message || '—' }}</p>\n<p style=\"margin:24px 0 0;font-size:12px;color:#5a4e3f\">Source : {{ $json.body.utm_source || 'direct' }} / {{ $json.body.utm_campaign || '—' }}{{ $json.body.gclid ? ' · clic Google Ads' : '' }}</p>\n</div>",
+        "options": {
+          "appendAttribution": false,
+          "replyTo": "={{ $json.body.email }}"
+        }
+      },
+      "id": "5b1f3c2e-1d4a-4f6b-9a7e-1c2d3e4f5a02",
+      "name": "Mail alerte lead",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [260, 0]
+    }
+  ],
+  "connections": {
+    "Webhook LP": {
+      "main": [
+        [
+          {
+            "node": "Mail alerte lead",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  }
+}
